@@ -5,5 +5,5 @@ from .models import Image,Profile
 
 class  NewPostForm(forms.ModelForm):
     class Meta:
-        model = Post
-        exclude = ['user','profile',]
+        model = Image
+        exclude = ['profile', 'likes','comments']
