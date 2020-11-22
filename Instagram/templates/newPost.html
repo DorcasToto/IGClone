@@ -12,7 +12,7 @@
                 </div>
                 <div class="panel-body">
 
-                    <form action="{%url 'newPost'%}" method="post">
+                    <form action="{%url 'newPost'%}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         <div class="form-group">

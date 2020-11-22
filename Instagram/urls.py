@@ -9,6 +9,7 @@ urlpatterns = [
     path('post/<id>', views.comment, name='comment'),
     path('profile/', views.profile, name='profile'),
     path('edit_profile/', views.editProfile,name = 'update_profile'),
+    path('search/', views.searchprofile, name='search'),
 ]
 
 if settings.DEBUG:

@@ -24,9 +24,8 @@ def newPost(request):
         form = NewPostForm(request.POST, request.FILES)        
         if form.is_valid():
             image=form.cleaned_data.get('image')
-            import pdb; pdb.set_trace()
-            print(image)
             imageCaption=form.cleaned_data.get('imageCaption')
+            print(form.cleaned_data.get('imageCaption'))
             post = Image(image = image,imageCaption= imageCaption, profile=user_profile)
             post.savePost()
             
@@ -107,3 +106,17 @@ def comment(request,id):
     else:
         form = CommentForm()
     return render(request,'comment.html',{"form":form})
+
+def searchprofile(request): 
+    if 'searchUser' in request.GET and request.GET['searchUser']:
+        name = request.GET.get("searchUser")
+        searchResults = Profile.search_profile(name)
+        message = f'name'
+        params = {
+            'results': searchResults,
+            'message': message
+        }
+        return render(request, 'results.html', params)
+    else:
+        message = "You haven't searched for any image category"
+    return render(request, 'results.html', {'message': message})
