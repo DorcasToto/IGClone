@@ -8,6 +8,7 @@ urlpatterns = [
     path('new/post/', views.newPost, name='newPost'),
     path('post/<id>', views.comment, name='comment'),
     path('profile/', views.profile, name='profile'),
+    path('edit_profile/', views.editProfile,name = 'update_profile'),
 ]
 
 if settings.DEBUG:

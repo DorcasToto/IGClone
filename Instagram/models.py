@@ -6,7 +6,7 @@ from django.db import models
 # Create your models here.
 
 class Profile(models.Model):
-    profilephoto = models.ImageField(upload_to = 'images')
+    profilephoto = models.ImageField(upload_to = 'imageprofile')
     Bio = models.CharField(max_length=30)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 

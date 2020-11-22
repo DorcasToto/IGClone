@@ -18,13 +18,13 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('comment',)
 
-    class profileFrom(forms.ModelForm):
-        class Meta:
-            model = Profile
-            fields = [ 'profilephoto', 'Bio']
-            
-    class UserUpdateForm(forms.ModelForm):
+class profileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = [ 'profilephoto', 'Bio']
+
+class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
-        class Meta:
-            model = User
-            fields = ['username','email']        
+    class Meta:
+        model = User
+        fields = ['username','email']        
