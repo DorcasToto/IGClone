@@ -25,7 +25,6 @@ def newPost(request):
         if form.is_valid():
             image=form.cleaned_data.get('image')
             imageCaption=form.cleaned_data.get('imageCaption')
-            print(form.cleaned_data.get('imageCaption'))
             post = Image(image = image,imageCaption= imageCaption, profile=user_profile)
             post.savePost()
             
@@ -76,7 +75,7 @@ def editProfile(request):
             userForm.save()
             profile_form.save()
 
-            return redirect('home')
+            return redirect('profile')
 
     else:
         
@@ -94,15 +93,16 @@ def editProfile(request):
 @login_required(login_url='/accounts/login/')
 def comment(request,id):
     current_user = request.user
+    user_profile = Profile.objects.get(user = current_user)
     image = get_object_or_404(Image, id=id)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit = False)
             comment.postt = image
-            comment.userr = request.user.profile
+            comment.userr = user_profile
             comment.save()
-            return redirect('index')
+            return redirect('home')
     else:
         form = CommentForm()
     return render(request,'comment.html',{"form":form})

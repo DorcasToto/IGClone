@@ -13,7 +13,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.Bio
 
-        
+
     @classmethod
     def search_profile(cls, name):
         return cls.objects.filter(user__username__icontains=name).all()
@@ -23,7 +23,7 @@ class Image(models.Model):
     imageName = models.CharField(max_length=30,blank=True)
     imageCaption = models.CharField(max_length=30)
     profile = models.ForeignKey(Profile,on_delete = models.CASCADE)
-    likes = models.IntegerField(default=0,blank=True)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True, )
     comments = models.CharField(max_length=30,blank=True)
 
     def savePost(self):
@@ -39,6 +39,8 @@ class Comment(models.Model):
     postt= models.ForeignKey(Image, on_delete=models.CASCADE)
     userr= models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, null=True)
+
+
 
 class Follow(models.Model):
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')

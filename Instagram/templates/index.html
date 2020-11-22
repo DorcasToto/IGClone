@@ -18,6 +18,7 @@
                             <a href="{% url 'comment' post.id %}"><i class="fas fa-comment h2 fa-fw pr-3"></i></a>
                         </div>
                         <p><strong>{{post.profile}}</strong> {{post.imageCaption}}</p>
+                        
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -29,11 +30,11 @@
         </div>
 
         <div class="col-1">
-            <h3>Suggestions</h3>
+            <h3>People</h3>
             <li>
                 <a>
                     {%for prof in profile%}
-                   <a href="">{{prof.user}}</a>
+                   <a href="{%url "profile"%}">{{prof.user}}</a>
                     {%endfor%}
                 </a>
             </li>
