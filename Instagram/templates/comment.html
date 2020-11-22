@@ -1,0 +1,41 @@
+{%extends "django_registration/base.html"%}
+{% load bootstrap3 %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Empty div -->
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <h3 class="text-center">Comment</h3>
+                </div>
+                <div class="panel-body">
+
+                    <form class="form" action="" method="post" novalidate>
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <div class="row">
+                            <div class="col-md-10">
+                            </div>
+                            <div class="col-md-2 mt-4">
+                                <button type="submit" class="btn btn-sm btn-outline-primary"
+                                    style="margin-top:14px; margin-left:-10px">post</button>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- empty div -->
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+{% endblock %}

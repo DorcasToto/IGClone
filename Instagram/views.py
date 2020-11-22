@@ -3,16 +3,18 @@ from __future__ import unicode_literals
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .forms import NewPostForm
-from .models import Image, Profile
+from .forms import NewPostForm,CommentForm,profileFrom,UserUpdateForm
+from .models import Image, Profile,Comment
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def index(request):
     posts = Image.objects.all()
+    profile = Profile.objects.all()
     # profile = Profile.objects.filter(user=Image.profile.id).first()
     # print('posts',posts)
-    return render(request,'index.html',{"posts":posts})
+    return render(request,'index.html',{"posts":posts,"profile":profile})
 
 @login_required(login_url='/accounts/login/')
 def newPost(request):
@@ -22,9 +24,12 @@ def newPost(request):
         form = NewPostForm(request.POST, request.FILES)        
         if form.is_valid():
             image=form.cleaned_data.get('image')
+            import pdb; pdb.set_trace()
+            print(image)
             imageCaption=form.cleaned_data.get('imageCaption')
             post = Image(image = image,imageCaption= imageCaption, profile=user_profile)
             post.savePost()
+            
         else:
             print(form.errors)
 
@@ -33,6 +38,47 @@ def newPost(request):
     else:
         form = NewPostForm()
     return render(request, 'newPost.html', {"form": form})
-     
+    
+@login_required(login_url='/accounts/login/')    
 def profile(request):
-    pass
+    if request.method == 'POST':
+
+    userForm = UserUpdateForm(request.POST, instance=request.user)
+    profile_form = profileFrom(
+        request.POST, request.FILES, instance=request.user)
+
+    if  profile_form.is_valid():
+        user_form.save()
+        profile_form.save()
+
+        return redirect('home')
+
+    else:
+        
+        profile_form = profileFrom(instance=request.user)
+        user_form = UserUpdateForm(instance=request.user)
+
+        params = {
+            'user_form':user_form,
+            'profile_form': profile_form
+
+        }
+
+    return render(request, 'profile.html', params)
+
+
+@login_required(login_url='/accounts/login/')
+def comment(request,id):
+    current_user = request.user
+    image = get_object_or_404(Image, id=id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit = False)
+            comment.postt = image
+            comment.userr = request.user.profile
+            comment.save()
+            return redirect('index')
+    else:
+        form = CommentForm()
+    return render(request,'comment.html',{"form":form})

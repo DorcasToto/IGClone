@@ -3,17 +3,16 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <!-- Empty div -->
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
+
+        <div class="col-md-6 mx-auto card p-5 mt-5">
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    <h3 class="text-center">Sign Up</h3>
+                    <h3 class="text-center">New Post</h3>
                 </div>
                 <div class="panel-body">
 
-                    <form action="{%url 'newPost'%}" method="POST">
+                    <form action="{%url 'newPost'%}" method="post">
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         <div class="form-group">
@@ -26,10 +25,7 @@
                 </div>
 
             </div>
-
         </div>
-        <!-- empty div -->
-        <div class="col-md-4"></div>
     </div>
 </div>
 
