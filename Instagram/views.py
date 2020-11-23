@@ -92,6 +92,8 @@ def editProfile(request):
 
 @login_required(login_url='/accounts/login/')
 def comment(request,id):
+    comments = Comment.objects.filter(postt= id)
+    images = Image.objects.filter(id=id).all()
     current_user = request.user
     user_profile = Profile.objects.get(user = current_user)
     image = get_object_or_404(Image, id=id)
@@ -105,7 +107,7 @@ def comment(request,id):
             return redirect('home')
     else:
         form = CommentForm()
-    return render(request,'comment.html',{"form":form})
+    return render(request,'comment.html',{"form":form,"images":images,"comments":comments})
 
 def searchprofile(request): 
     if 'searchUser' in request.GET and request.GET['searchUser']:
@@ -120,3 +122,6 @@ def searchprofile(request):
     else:
         message = "You haven't searched for any image category"
     return render(request, 'results.html', {'message': message})
+
+def follow(request):
+    pass    

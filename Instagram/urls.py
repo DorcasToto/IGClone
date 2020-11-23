@@ -10,6 +10,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('edit_profile/', views.editProfile,name = 'update_profile'),
     path('search/', views.searchprofile, name='search'),
+    path('follow/<follow>', views.follow, name='follow')
 ]
 
 if settings.DEBUG:
