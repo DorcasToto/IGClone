@@ -67,10 +67,13 @@ def profile(request):
 
     return render(request, 'profile.html', params)
 
-def prof(request,username):
-    user_prof = get_object_or_404(User, username=username)
-    if request.user == user_prof:
-        return redirect('profile', username=request.user.username)
+def prof(request):
+    # user_prof = get_object_or_404(User, username=username)
+    # if request.user == user_prof:
+    #     return redirect('profile', username=request.user.username)
+    profile = Profile.objects.filter(user = request.user)
+    return render(request,"users/profile.html",{"profile":profile})
+
 
 def editProfile(request):
     if request.method == 'POST':
@@ -176,7 +179,7 @@ def register(request):
             profile.user=user
             profile.save()
 
-            messages.success(request, f'Successfully created Account!.You can now login as {username}!')
+            # messages.success(request, f'Successfully created Account!.You can now login as {username}!')
         return redirect('login')
     else:
         form= RegistrationForm()
