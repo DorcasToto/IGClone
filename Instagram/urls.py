@@ -8,9 +8,11 @@ urlpatterns = [
     path('new/post/', views.newPost, name='newPost'),
     path('comment/<id>', views.comment, name='comment'),
     path('profile/', views.profile, name='profile'),
+    path('prof/<username>', views.prof, name='prof'),
     path('edit_profile/', views.editProfile,name = 'update_profile'),
     path('search/', views.searchprofile, name='search'),
-    path('follow/<follow>', views.follow, name='follow')
+    path('follow/<id>', views.follow, name='follow'),
+    path('like', views.likePost, name='like_post'),
 ]
 
 if settings.DEBUG:

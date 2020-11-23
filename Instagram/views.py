@@ -7,6 +7,7 @@ from .forms import NewPostForm,CommentForm,profileForm,UserUpdateForm
 from .models import Image, Profile,Comment,Follow
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
@@ -65,6 +66,11 @@ def profile(request):
         }
 
     return render(request, 'profile.html', params)
+
+def prof(request,username):
+    user_prof = get_object_or_404(User, username=username)
+    if request.user == user_prof:
+        return redirect('profile', username=request.user.username)
 
 def editProfile(request):
     if request.method == 'POST':
@@ -125,11 +131,36 @@ def searchprofile(request):
         message = "You haven't searched for any image category"
     return render(request, 'results.html', {'message': message})
 
+def likePost(request):
+
+    image = get_object_or_404(Post, id=request.POST.get('id'))
+    is_liked = False
+    if image.likes.filter(id=request.user.id).exists():
+        image.likes.remove(request.user)
+        is_liked = False
+    else:
+        image.likes.add(request.user)
+        is_liked = False
+
+    params = {
+        'image': image,
+        'is_liked': is_liked,
+        'total_likes': image.total_likes()
+    }
+    if request.is_ajax():
+        html = render_to_string('instagram/like_section.html', params, request=request)
+        return JsonResponse({'form': html})
 
 
-def follow(request, to_follow):
-    if request.method == 'GET':
-        user_profile = Profile.objects.get(id=to_follow)
-        followers = Follow(follower=request.user.profile, followed=user_profile)
-        followers.save()
-        return redirect('profile', user_profile.user.username)   
+def follow(request,id):
+    if request.method=='POST':
+        my_profile=Profile.objects.get(user=request.user)
+        pk= request.POST.get('profile_pk')
+        obj=Profile.objects.get(id=id)
+
+        if obj.user in my_profile.following.all():
+            my_profile.following.remove(obj.user)
+        else:
+            my_profile.following.add(obj.user)
+        return redirect(request.META.get('HTTP_REFERER'))
+    return redirect('profile-details')

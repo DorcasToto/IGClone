@@ -11,7 +11,14 @@ class Profile(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.Bio
+        return self.user.username
+
+    
+    def save_profile(self):
+        self.user
+
+    def delete_profile(self):
+        self.delete()    
 
 
     @classmethod
@@ -30,6 +37,17 @@ class Image(models.Model):
         print(self)
         return self.save()
 
+    
+    @property
+    def get_all_comments(self):
+        return self.comments.all()
+
+    def delete_image(self):
+        self.delete()
+
+    def total_likes(self):
+        return self.likes.count()    
+
 
     def __str__(self):
         return self.imageName    
@@ -39,6 +57,13 @@ class Comment(models.Model):
     postt= models.ForeignKey(Image, on_delete=models.CASCADE)
     userr= models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, null=True)
+
+
+    def save_comment(self):
+        self.user
+
+    def delete_comment(self):
+        self.delete()
 
 
 

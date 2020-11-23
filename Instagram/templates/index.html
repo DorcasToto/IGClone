@@ -12,17 +12,18 @@
             <div class="row">
                 {%for post in posts%}
                 <div class="col-md-8" style="border: light 2px;">
-                    <div class="panel">
+                    <div class="card m-3">
                         <img src="{{post.image.url}}" class="img-fluid">
-                        <a href="{%url 'comment' post.id %}">
+                        <a href="{%url 'comment' post.id %}" class="pl-3">
+                           <p>{{post.comments.Count}}</p>
                             View all comments
+                    
                         </a>
                         <div class="row pl-4">
                             <a href=""><i class="fas fa-heart h2 fa-fw pr-3"></i></a>
                             <a href="{% url 'comment' post.id %}"><i class="fas fa-comment h2 fa-fw pr-3"></i></a>
                         </div>
-                        <p><strong class="text-secondary">{{post.profile}}</strong> {{post.imageCaption}}</p>
-
+                        <p><strong class="text-secondary pl-3" >{{post.profile}}</strong> {{post.imageCaption}}</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -41,7 +42,7 @@
                         {%for prof in profile%}  
                         <img src="{{prof.user.profile.profilephoto.url}}" style="background-image: https://cdn.pixabay.com/photo/2014/11/12/22/44/baby-528886_960_720.png;" alt="oops!"
                                 class="rounded-circle border pl-5">
-                                <a href="{%url "profile"%}" class="h3">{{prof.user}}</a>
+                                <a href="{%url "prof" prof.user.username%}" class="h3">{{prof.user}}</a>
                         {%endfor%}
                     </div>
                 </a>
