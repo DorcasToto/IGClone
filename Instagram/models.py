@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
+from cloudinary.models import CloudinaryField
+
 
 # Create your models here.
 
 class Profile(models.Model):
-    profilephoto = models.ImageField(upload_to = 'imageprofile')
+    image = CloudinaryField('profile')
     Bio = models.CharField(max_length=30)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
@@ -26,7 +28,7 @@ class Profile(models.Model):
         return cls.objects.filter(user__username__icontains=name).all()
 
 class Image(models.Model):
-    image = models.ImageField(upload_to = 'images')
+    image = CloudinaryField('images')
     imageName = models.CharField(max_length=30,blank=True)
     imageCaption = models.CharField(max_length=30)
     profile = models.ForeignKey(Profile,on_delete = models.CASCADE)

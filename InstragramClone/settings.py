@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 import os
 
@@ -32,6 +35,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Instagram',
+    'cloudinary',
     'bootstrap3',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -130,3 +134,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+cloudinary.config( 
+  cloud_name = "dzvafknwk", 
+  api_key = "792498396853217", 
+  api_secret = "Dr-pc8vOEDpJ_8bXqx0t4GkVqSk" 
+)
