@@ -89,4 +89,4 @@ Open [localhost:8000](http://127.0.0.1:8000/)
 
 ### License
 
-* LICENSED UNDER  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](license/MIT)
+* LICENSED UNDER  [![License: MIT](https://github.com/DorcasToto/IGClone/blob/master/License.md)](license/MIT)
