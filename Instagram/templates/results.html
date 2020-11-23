@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container">
+<div class="container" style="font-family: 'Jost', sans-serif;">
     <div class="row">
         <div class="col-md-6 mx-auto">
             {% if results %}
@@ -18,18 +18,25 @@
             {% for res in results %}
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
-                        <img src="{{res.user.profile.profilephoto.url}}" alt=""
-                            class="rounded-circle border ml-3 mt-2  mr-3" width="55" height="55">
-                    </div>
-                    <div class="col-md-6 mt-2">
-                        <span><strong><a
-                                    href="">{{res.user.username}}</a></strong></span>
-                    </div>
-                    <div class="col-md-3 mt-3">
-                        <button class="btn btn-sm btn-outline-primary">follow</button>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{res.user.profile.profilephoto.url}}" alt="oops cant display"
+                                class="rounded-circle border ml-3 mt-2  mr-3" width="55" height="55">
+                        </div>
+                        <div class="col-md-8">
+                            <span><strong><a href="">{{res.user.username}}</a></strong></span>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <p>Followers</p>
+                                </div>
+                                <div class="col-sm">Following</div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                <button class="btn btn-sm btn-outline-primary">follow</button>
+                            </div>
 
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>

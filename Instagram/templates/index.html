@@ -1,9 +1,10 @@
 {%extends 'base.html'%}
 {%block content%}
-<div class="container">
+<div class="container" style="font-family: 'Jost', sans-serif;">
     <h1>Welcome {{user.username}}</h1>
-    <a href = "{%url 'newPost'%}">
-        <buttton class="btn btn-primary">Add Post</buttton>
+    <a href="{%url 'newPost'%}">
+        <button type="submit" class="btn btn-sm btn-outline-default" style="margin-top:14px; margin-left:-10px">Add
+            post</button>
     </a>
     <hr>
     <div class="row">
@@ -13,16 +14,19 @@
                 <div class="col-md-8" style="border: light 2px;">
                     <div class="panel">
                         <img src="{{post.image.url}}" class="img-fluid">
+                        <a href="{%url 'comment' post.id %}">
+                            View all comments
+                        </a>
                         <div class="row pl-4">
                             <a href=""><i class="fas fa-heart h2 fa-fw pr-3"></i></a>
                             <a href="{% url 'comment' post.id %}"><i class="fas fa-comment h2 fa-fw pr-3"></i></a>
                         </div>
-                        <p><strong>{{post.profile}}</strong> {{post.imageCaption}}</p>
-                        
+                        <p><strong class="text-secondary">{{post.profile}}</strong> {{post.imageCaption}}</p>
+
                     </div>
                 </div>
                 <div class="col-md-4">
-        
+
                 </div>
                 {%endfor%}
             </div>
@@ -31,15 +35,16 @@
 
         <div class="col-1">
             <h3>People</h3>
-            <li>
+            <hr>
                 <a>
-                    {%for prof in profile%}
-                   <a href="{%url "profile"%}">{{prof.user}}</a>
-                    {%endfor%}
+                    <div class="row">
+                        {%for prof in profile%}  
+                        <img src="{{prof.user.profile.profilephoto.url}}" style="background-image: https://cdn.pixabay.com/photo/2014/11/12/22/44/baby-528886_960_720.png;" alt="oops!"
+                                class="rounded-circle border pl-5">
+                                <a href="{%url "profile"%}" class="h3">{{prof.user}}</a>
+                        {%endfor%}
+                    </div>
                 </a>
-            </li>
-
-
         </div>
     </div>
 

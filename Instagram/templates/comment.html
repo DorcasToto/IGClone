@@ -1,7 +1,7 @@
-{%extends "django_registration/base.html"%}
+{%extends "base.html"%}
 {% load bootstrap3 %}
 {% block content %}
-<div class="container">
+<div class="container" style="font-family: 'Jost', sans-serif;">
     <div class="row  p-5 mt-5">
         {%for image in images%}
         <!-- Empty div -->
@@ -16,7 +16,7 @@
                         {% bootstrap_form form %}
                         <div class="row pl-5">
                             <button type="submit" class="btn btn-sm btn-outline-primary"
-                                style="margin-top:14px; margin-left:-10px">post</button>
+                                style="margin-top:14px; margin-left:-10px">Comment</button>
                         </div>
 
 
@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-6">
             {%for comment in comments%}
-            <p><strong>{{comment.userr.user}}</strong>  {{comment.comment}}</p>
+            <p><strong class="text-secondary">{{comment.userr.user}}</strong>  {{comment.comment}}</p>
             {%endfor%}
         </div>
         {%endfor%}

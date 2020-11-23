@@ -1,23 +1,24 @@
 {%extends "registration/base.html"%}
+{% load bootstrap3 %}
 {% block content %}
 <div class="container">
     <div class="row">
         <!-- Empty div -->
-        <div class="col-md-4"></div>
+        <div class="col-md-8">
+            <h3>Hey</h3>
+        </div>
         <div class="col-md-4">
             {% if form.errors %}
             <p> Password or Username is incorrect </p>
             {% endif %}
             <div class="panel panel-default">
 
-                <div class="panel-heading"> 
+                <div class="panel-body card p-5 mt-5">
                     <h3 class="text-center">Sign In</h3>
-                </div>
-                <div class="panel-body">
 
                     <form action="/accounts/login/" method="post">
                         {% csrf_token %}
-                        {{  form }}
+                        {% bootstrap_form form %}
 
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary btn-sm" value="Login">
@@ -33,7 +34,6 @@
 
         </div>
         <!-- empty div -->
-        <div class="col-md-4"></div>
     </div>
 </div>
 
