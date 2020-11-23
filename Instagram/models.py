@@ -8,9 +8,9 @@ from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class Profile(models.Model):
-    image = CloudinaryField('profile')
+    profilephoto = CloudinaryField('profilesss')
     Bio = models.CharField(max_length=30)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
