@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import NewPostForm,CommentForm,profileForm,UserUpdateForm,profileForm,RegistrationForm
-from .models import Image, Profile,Comment,Follow
+from .models import Image, Profile,Comment
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -158,7 +158,7 @@ def likePost(request):
 def follow(request,id):
     if request.method=='POST':
         my_profile=Profile.objects.get(user=request.user)
-        pk= request.POST.get('profile_pk')
+        pk= request.POST.get('follow')
         obj=Profile.objects.get(id=id)
 
         if obj.user in my_profile.following.all():
@@ -166,7 +166,8 @@ def follow(request,id):
         else:
             my_profile.following.add(obj.user)
         return redirect(request.META.get('HTTP_REFERER'))
-    return redirect('profile-details')
+    return HttpResponseRedirect(request.path_info)
+
 
 def register(request):
     if request.method=="POST":

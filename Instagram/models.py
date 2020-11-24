@@ -11,9 +11,11 @@ class Profile(models.Model):
     profilephoto = CloudinaryField('profilesss')
     Bio = models.CharField(max_length=30)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
+    following = models.ManyToManyField(User,blank=True,related_name='follow')
 
     def __str__(self):
         return self.user.username
+
 
     
     def save_profile(self):
@@ -30,7 +32,7 @@ class Profile(models.Model):
 class Image(models.Model):
     image = CloudinaryField('images')
     imageName = models.CharField(max_length=30,blank=True)
-    imageCaption = models.CharField(max_length=30)
+    imageCaption = models.CharField(max_length=300)
     profile = models.ForeignKey(Profile,on_delete = models.CASCADE)
     likes = models.ManyToManyField(User, related_name='likes', blank=True, )
     comments = models.CharField(max_length=30,blank=True)
@@ -67,14 +69,6 @@ class Comment(models.Model):
     def delete_comment(self):
         self.delete()
 
-
-
-class Follow(models.Model):
-    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
-    followed = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers')
-
-    def __str__(self):
-        return f'{self.follower} Follow'    
 
 
      
