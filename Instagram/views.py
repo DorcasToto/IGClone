@@ -9,8 +9,14 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 
+from django.views.generic import (
+    ListView,
+    DetailView,
+    DeleteView
+)
+
 # Create your views here.
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='accounts/login/')
 def index(request):
     posts = Image.objects.all()
     profile = Profile.objects.all()
@@ -40,7 +46,7 @@ def newPost(request):
         form = NewPostForm()
     return render(request, 'newPost.html', {"form": form})
     
-@login_required(login_url='/accounts/login/')    
+@login_required(login_url='accounts/login/')    
 def profile(request):
     if request.method == 'POST':
 
@@ -156,10 +162,41 @@ def likePost(request):
 
 
 def follow(request,id):
+
+    class UserListView(ListView):
+        model=Profile
+        template_name='posts/view.html'
+        context_object_name='posts'
+
+        def get_queryset(self):
+            return Profile.objects.all().exclude(user=self.request.user)
+            # user = get_object_or_404(User, username=self.kwargs.get('username'))
+            # return Image.objects.filter(author=user.profile).order_by('-date_posted')
+
+    class ProfileDetailView(DeleteView):
+        model=Profile
+        template_name='profile.html'
+        context_object_name='posts'
+
+        def get_object(self, **kwargs):
+            id=self.kwargs.get('id')
+            prof=Profile.objects.get(id=id)
+            return prof
+        def get_context_data(self, **kwargs):
+            context=super().get_context_data(**kwargs)
+            avi=self.get_object()
+            myProf=Profile.objects.get(user=self.request.user)
+            if avi.user in myProf.following.all():
+                follow=True
+            else:
+                follow=False
+            context["follow"]=follow
+            return context
+
     if request.method=='POST':
         my_profile=Profile.objects.get(user=request.user)
         pk= request.POST.get('follow')
-        obj=Profile.objects.get(id=id)
+        obj=Profile.objects.get(id=pk)
 
         if obj.user in my_profile.following.all():
             my_profile.following.remove(obj.user)
