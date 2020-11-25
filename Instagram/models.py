@@ -29,6 +29,10 @@ class Profile(models.Model):
     def search_profile(cls, name):
         return cls.objects.filter(user__username__icontains=name).all()
 
+class Followwww(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    followers = models.CharField(max_length=30)        
+
 class Image(models.Model):
     image = CloudinaryField('images')
     imageName = models.CharField(max_length=30,blank=True)

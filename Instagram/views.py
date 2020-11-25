@@ -4,10 +4,11 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import NewPostForm,CommentForm,profileForm,UserUpdateForm,profileForm,RegistrationForm
-from .models import Image, Profile,Comment
+from .models import Image, Profile,Comment,Followwww
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from django.views.generic import (
     ListView,
@@ -140,9 +141,20 @@ def searchprofile(request):
         message = "You haven't searched for any image category"
     return render(request, 'results.html', {'message': message})
 
+class PostDetailView(DetailView):
+    model = Image
+    template_name= 'index.html'
+    def get_context_data(self, *args, **kwargs):
+        context=super(PostDetailView, self).get_context_data(*args, **kwargs)
+        stuff=get_object_or_404(Image, id=self.kwargs['id'])
+        total_likes=stuff.total_likes()
+        context["total_likes"]=total_likes
+        return context    
+
 def likePost(request,id):
-    post= get_object_or_404(Image, id=request.POST.get('id'))
+    post= get_object_or_404(Image, id=request.POST.get('post_id'))
     post.likes.add(request.user)
+    # return HttpResponseRedirect(reverse('home', args=[str(id)]))
     return HttpResponseRedirect(request.path_info)
 
 class UserListView(ListView):
@@ -192,7 +204,12 @@ def follow_unfollow(request):
         return redirect(request.META.get('HTTP_REFERER'))
     return HttpResponseRedirect(request.path_info)
         # return redirect('profile-list-view ')
-
+def folo(request,id):
+    current_user = request.user
+    usertoFollow = User.objects.get(id = id)
+    follow = Followwww(user,usetoFollow)
+    follow.save()
+    return HttpResponseRedirect(request.path_info)
 
 def register(request):
     if request.method=="POST":
