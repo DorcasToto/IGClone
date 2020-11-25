@@ -13,10 +13,12 @@ urlpatterns = [
     path('prof/', views.prof, name='prof'),
     path('edit_profile/', views.editProfile,name = 'update_profile'),
     path('search/', views.searchprofile, name='search'),
-    path('follow/<id>', views.follow, name='follow'),
+    path('follow/', views.follow_unfollow, name='follow'),
     path('like/', views.likePost, name='like_post'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('register/',views.register, name='registration'),
+    path('profiles/', views.UserListView.as_view(), name='profile-list-view'),
+    path('profiles/<pk>/', views.ProfileDetailView.as_view(), name='profile-detail-view'),
 ]
 
 if settings.DEBUG:

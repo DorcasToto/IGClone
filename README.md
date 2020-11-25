@@ -5,6 +5,9 @@
 
 ## Description
 This is an application that allows users to sign up, upload pictures,view other user's pictures,like them, comment on them and also follow the other users.
+
+## Figma design
+A [link](https://www.figma.com/file/LojVD0lZuua3mac60kh1Ib/instaclone?node-id=1%3A3) to my figma design
  
 ## Setup and installations
 

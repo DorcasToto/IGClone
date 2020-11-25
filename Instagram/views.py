@@ -16,7 +16,7 @@ from django.views.generic import (
 )
 
 # Create your views here.
-@login_required(login_url='accounts/login/')
+@login_required(login_url='/accounts/login/')
 def index(request):
     posts = Image.objects.all()
     profile = Profile.objects.all()
@@ -46,7 +46,7 @@ def newPost(request):
         form = NewPostForm()
     return render(request, 'newPost.html', {"form": form})
     
-@login_required(login_url='accounts/login/')    
+@login_required(login_url='/accounts/login/')    
 def profile(request):
     if request.method == 'POST':
 
@@ -140,58 +140,45 @@ def searchprofile(request):
         message = "You haven't searched for any image category"
     return render(request, 'results.html', {'message': message})
 
-def likePost(request):
+def likePost(request,id):
+    post= get_object_or_404(Image, id=request.POST.get('id'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(request.path_info)
 
-    image = get_object_or_404(Post, id=request.POST.get('id'))
-    is_liked = False
-    if image.likes.filter(id=request.user.id).exists():
-        image.likes.remove(request.user)
-        is_liked = False
-    else:
-        image.likes.add(request.user)
-        is_liked = False
+class UserListView(ListView):
+    model=Profile
+    template_name='posts/view.html'
+    context_object_name='posts'
 
-    params = {
-        'image': image,
-        'is_liked': is_liked,
-        'total_likes': image.total_likes()
-    }
-    if request.is_ajax():
-        html = render_to_string('instagram/like_section.html', params, request=request)
-        return JsonResponse({'form': html})
-
-
-def follow(request,id):
-
-    class UserListView(ListView):
-        model=Profile
-        template_name='posts/view.html'
-        context_object_name='posts'
-
-        def get_queryset(self):
-            return Profile.objects.all().exclude(user=self.request.user)
+    def get_queryset(self):
+        return Profile.objects.all().exclude(user=self.request.user)
             # user = get_object_or_404(User, username=self.kwargs.get('username'))
             # return Image.objects.filter(author=user.profile).order_by('-date_posted')
 
-    class ProfileDetailView(DeleteView):
-        model=Profile
-        template_name='profile.html'
-        context_object_name='posts'
+class ProfileDetailView(DetailView):
+    model=Profile
+    template_name='posts/detail.html'
+    context_object_name='posts'
 
-        def get_object(self, **kwargs):
-            id=self.kwargs.get('id')
-            prof=Profile.objects.get(id=id)
-            return prof
-        def get_context_data(self, **kwargs):
-            context=super().get_context_data(**kwargs)
-            avi=self.get_object()
-            myProf=Profile.objects.get(user=self.request.user)
-            if avi.user in myProf.following.all():
-                follow=True
-            else:
-                follow=False
-            context["follow"]=follow
-            return context
+    def get_object(self, **kwargs):
+        id=self.kwargs.get('pk')
+        prof=Profile.objects.get(pk=id)
+        return prof
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        avi=self.get_object()
+        myProf=Profile.objects.get(user=self.request.user)
+        if avi.user in myProf.following.all():
+            follow=True
+        else:
+            follow=False
+        context["follow"]=follow
+        return context
+
+
+
+def follow_unfollow(request):
 
     if request.method=='POST':
         my_profile=Profile.objects.get(user=request.user)
@@ -204,6 +191,7 @@ def follow(request,id):
             my_profile.following.add(obj.user)
         return redirect(request.META.get('HTTP_REFERER'))
     return HttpResponseRedirect(request.path_info)
+        # return redirect('profile-list-view ')
 
 
 def register(request):
